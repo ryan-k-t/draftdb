@@ -88,5 +88,6 @@ class CreateCoreSchema extends Migration
         Schema::dropIfExists('classifications');
         Schema::dropIfExists('rankings');
         Schema::dropIfExists('positions');
+        Schema::dropIfExists('seasonal_player_positions');
     }
 }
