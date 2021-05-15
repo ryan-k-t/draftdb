@@ -1,6 +1,7 @@
 <div class="sidebar">
     <nav class="sidebar-nav">
         <ul class="nav">
+            <li class="nav-item"><a href="{{ url('admin') }}" class="nav-link"><i class="nav-icon fa fa-dashboard"></i> {{ __('Admin Dashboard') }}</a></li>
             <li class="nav-title">{{ trans('brackets/admin-ui::admin.sidebar.content') }}</li>
             <li class="nav-item"><a class="nav-link" href="{{ url('admin/sources') }}"><i class="nav-icon icon-flag"></i> {{ trans('admin.source.title') }}</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('admin/players') }}"><i class="nav-icon icon-people"></i> {{ trans('admin.player.title') }}</a></li>
