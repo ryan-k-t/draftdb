@@ -16,48 +16,55 @@ class CreateCoreSchema extends Migration
         Schema::create('sources', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
         Schema::create('ranking_instances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('source_id');
-            $table->year('season');
-            $table->date('date');
+            $table->foreignId('source_id')->references('id')->on('sources');
+            $table->year('season')->index();
+            $table->date('date')->index();
             $table->timestamps();
         });
         Schema::create('players', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
-            $table->string('middle_name');
+            $table->string('middle_name')->nullable();
             $table->string('last_name');
-            $table->string('preferred_name');
-            $table->date('date_of_birth');
+            $table->string('preferred_name')->nullable();
+            $table->date('date_of_birth')->nullable();
             $table->timestamps();
-        });
-        Schema::create('seasonal_player', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('player_id');
-            $table->year('season');
-            $table->string('school');
-            $table->string('city');
-            $table->string('state');
-            $table->foreignId('classification_id')->index();
-            $table->string('commitment');
-            $table->unsignedInteger('height')->nullable();
-            $table->unsignedInteger('weight')->nullable();
-            $table->enum('bats', ['R', 'L', 'S']);
-            $table->enum('throws', ['R', 'L', 'S']);
-            $table->timestamps();
-            $table->unique(['player_id','season']);
         });
         Schema::create('classifications', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('description')->nullable();
+            $table->timestamps();
+        });
+        Schema::create('hand_types', function (Blueprint $table) {
+            $table->id();
+            $table->char('name')->unique();
+        });
+        Schema::create('seasonal_player', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('player_id')->references('id')->on('players');
+            $table->year('season');
+            $table->string('school')->nullable();
+            $table->string('city');
+            $table->string('state');
+            $table->foreignId('classification_id')->references('id')->on('classifications');
+            $table->string('commitment')->nullable();
+            $table->unsignedInteger('height')->nullable();
+            $table->unsignedInteger('weight')->nullable();
+            $table->foreignId('bats')->references('id')->on('hand_types');
+            $table->foreignId('throws')->references('id')->on('hand_types');
+            $table->timestamps();
+            $table->unique(['player_id','season']);
         });
         Schema::create('rankings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('seasonal_player_id');
-            $table->foreignId('ranking_instance_id');
+            $table->foreignId('seasonal_player_id')->references('id')->on('seasonal_player');
+            $table->foreignId('ranking_instance_id')->references('id')->on('ranking_instances');
             $table->unsignedInteger('rank')->index();
             $table->timestamps();
             $table->unique(['seasonal_player_id','ranking_instance_id']);
@@ -65,11 +72,13 @@ class CreateCoreSchema extends Migration
         Schema::create('positions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('description')->nullable();
+            $table->timestamps();
         });
         Schema::create('seasonal_player_positions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('seasonal_player_id');
-            $table->foreignId('position_id');
+            $table->foreignId('seasonal_player_id')->references('id')->on('seasonal_player');
+            $table->foreignId('position_id')->references('id')->on('positions');
             $table->unique(['seasonal_player_id','position_id']);
         });
     }

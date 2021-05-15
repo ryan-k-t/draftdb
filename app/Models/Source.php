@@ -20,6 +20,11 @@ class Source extends Model
     
     protected $appends = ['resource_url'];
 
+    public function rankingInstances()
+    {
+        return $this->hasMany(RankingInstance::class);
+    }
+    
     /* ************************ ACCESSOR ************************* */
 
     public function getResourceUrlAttribute()

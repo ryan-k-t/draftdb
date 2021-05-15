@@ -28,8 +28,6 @@ class UpdateSource extends FormRequest
         return [
             'name' => ['sometimes', 'string'],
             'description' => ['nullable', 'string'],
-            'creator_id' => ['sometimes', 'string'],
-            
         ];
     }
 
