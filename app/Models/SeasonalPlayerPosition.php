@@ -20,6 +20,13 @@ class SeasonalPlayerPosition extends Model
     
     protected $appends = ['resource_url'];
 
+    public function position(){
+        return $this->belongsTo(Position::class);
+    }
+    public function seasonalPlayer(){
+        return $this->belongsTo(SeasonalPlayer::class);
+    }
+
     /* ************************ ACCESSOR ************************* */
 
     public function getResourceUrlAttribute()

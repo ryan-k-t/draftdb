@@ -32,7 +32,7 @@ class SeasonalPlayer extends Model
 
 
     public function positions(){
-        return $this->hasMany(SeasonalPlayerPosition::class);
+        return $this->belongsToMany(Position::class, 'seasonal_player_positions');
     }
     public function batType(){
         return $this->belongsTo(HandType::class, null, 'bats');

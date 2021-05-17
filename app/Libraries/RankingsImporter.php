@@ -188,14 +188,15 @@ class RankingsImporter {
 
         // update SeasonalPlayer position(s)
         $position_list = explode( "/", $positions );
-        collect( $position_list )->each(function( $item ) use ($seasonalPlayer) {
-            $positionId = Arr::get( $this->_positions, $item );
-            if( $positionId ):
-                if ( $position = Position::find( $positionId ) ):
-                    $seasonalPlayer->positions()->save( $position );
-                endif;
-            endif;
+        $position_ids = collect( $position_list )->map(function( $item ) {
+            return Arr::get( $this->_positions, $item );
         });
+        $position_ids = $position_ids->filter(function($item){
+            return !is_null( $item );
+        });
+        if( $position_ids ):
+            $seasonalPlayer->positions()->syncWithoutDetaching( $position_ids->all() );
+        endif;
 
         // create ranking
         Ranking::create([
