@@ -10,7 +10,7 @@ class Ranking extends Model
         'seasonal_player_id',
         'ranking_instance_id',
         'rank',
-    
+        'notes'
     ];
     
     

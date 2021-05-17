@@ -20,16 +20,32 @@ class SeasonalPlayer extends Model
         'weight',
         'bats',
         'throws',
-    
+        'age',
     ];
     
     
     protected $dates = [
-        'season',
         'created_at',
         'updated_at',
     
     ];
+
+
+    public function positions(){
+        return $this->hasMany(SeasonalPlayerPosition::class);
+    }
+    public function batType(){
+        return $this->belongsTo(HandType::class, null, 'bats');
+    }
+    public function throwType(){
+        return $this->belongsTo(HandType::class, null, 'throws');
+    }
+    public function classification(){
+        return $this->belongsTo(Classification::class);
+    }
+    public function player(){
+        return $this->belongsTo(Player::class);
+    }
     
     protected $appends = ['resource_url'];
 

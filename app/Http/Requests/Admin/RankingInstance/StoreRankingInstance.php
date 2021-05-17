@@ -27,8 +27,9 @@ class StoreRankingInstance extends FormRequest
     {
         return [
             'source' => ['required'],
-            'season' => ['required', 'date'],
+            'season' => ['required'],
             'date' => ['required', 'date'],
+            'import_file' => ['required']
             
         ];
     }

@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-12">
+        <div class="col-10">
 
             <div class="title m-b-md">
                 Laravel
@@ -11,17 +11,12 @@
 
             <example-component></example-component>
 
-            <div class="links">
-                <a href="https://laravel.com/docs">Docs</a>
-                <a href="https://laracasts.com">Laracasts</a>
-                <a href="https://laravel-news.com">News</a>
-                <a href="https://blog.laravel.com">Blog</a>
-                <a href="https://nova.laravel.com">Nova</a>
-                <a href="https://forge.laravel.com">Forge</a>
-                <a href="https://vapor.laravel.com">Vapor</a>
-                <a href="https://github.com/laravel/laravel">GitHub</a>
-            </div>
 
+
+        </div>
+        <div class="col-2">
+            <a href="{{ url('/admin/ranking-instances/create') }}" class="btn btn-primary"><i class="fas fa-plus"></i>Add New Ranking</a>
+            <a href="#">Other stuff</a>
         </div>
     </div>
 </div>

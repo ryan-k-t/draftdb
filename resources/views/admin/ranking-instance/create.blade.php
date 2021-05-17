@@ -28,6 +28,10 @@
 
                     <div class="card-body">
                         @include('admin.ranking-instance.components.form-elements')
+                        @include('brackets/admin-ui::admin.includes.media-uploader', [
+                            'mediaCollection' => app(App\Models\RankingInstance::class)->getMediaCollection('import_file'),
+                            'label' => 'Import File'
+                        ])
                     </div>
                                     
                     <div class="card-footer">

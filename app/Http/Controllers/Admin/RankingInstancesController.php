@@ -19,7 +19,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use App\Libraries\RankingsImporter;
 
 class RankingInstancesController extends Controller
 {
@@ -95,6 +98,22 @@ class RankingInstancesController extends Controller
 
         // Store the RankingInstance
         $rankingInstance = RankingInstance::create($sanitized);
+
+        // now process the import data
+        $importer = new RankingsImporter( $rankingInstance, $sanitized['import_file'][0]['path']);
+        $import_errors = $importer->process();
+        Log::debug( print_r( $import_errors, true));
+
+        // if errors, delete the rankingInstance
+        if( is_array($import_errors) && count( $import_errors ) > 0):
+            //delete
+            $rankingInstance->delete();
+            //return errors
+            return response()->json([
+                'success' => FALSE,
+                'message' => "Unable to process import file"
+            ], 422);
+        endif;
 
         if ($request->ajax()) {
             return ['redirect' => url('admin/ranking-instances'), 'message' => trans('brackets/admin-ui::admin.operation.succeeded')];

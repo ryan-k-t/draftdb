@@ -10,9 +10,9 @@ Vue.component('ranking-instance-form', {
             form: {
                 source:  '' ,
                 season:  '' ,
-                date:  '' ,
-                
-            }
+                date:  '' ,                
+            },
+            mediaCollections: ['import_file']
         }
     }
 

@@ -50,14 +50,15 @@ class CreateCoreSchema extends Migration
             $table->foreignId('player_id')->references('id')->on('players');
             $table->year('season');
             $table->string('school')->nullable();
-            $table->string('city');
-            $table->string('state');
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
             $table->foreignId('classification_id')->references('id')->on('classifications');
             $table->string('commitment')->nullable();
             $table->unsignedInteger('height')->nullable();
             $table->unsignedInteger('weight')->nullable();
             $table->foreignId('bats')->references('id')->on('hand_types');
             $table->foreignId('throws')->references('id')->on('hand_types');
+            $table->double('age', 4, 2);
             $table->timestamps();
             $table->unique(['player_id','season']);
         });
@@ -66,6 +67,7 @@ class CreateCoreSchema extends Migration
             $table->foreignId('seasonal_player_id')->references('id')->on('seasonal_player');
             $table->foreignId('ranking_instance_id')->references('id')->on('ranking_instances');
             $table->unsignedInteger('rank')->index();
+            $table->text('notes');
             $table->timestamps();
             $table->unique(['seasonal_player_id','ranking_instance_id']);
         });

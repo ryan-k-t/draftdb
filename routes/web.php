@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,13 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/*
 Route::get('/', function () {
     return view('welcome');
 });
+*/
+Route::get('/', 'HomeController@index')->name('home');
+Route::redirect('/home', '/', 301);
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 
 /* Auto-generated admin routes */

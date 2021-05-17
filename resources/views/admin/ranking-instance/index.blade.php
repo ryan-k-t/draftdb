@@ -95,8 +95,8 @@
                                         </td>
 
                                     <td>@{{ item.id }}</td>
-                                        <td>@{{ item.source_id }}</td>
-                                        <td>@{{ item.season | date }}</td>
+                                        <td>@{{ item.source.name }}</td>
+                                        <td>@{{ item.season }}</td>
                                         <td>@{{ item.date | date }}</td>
                                         
                                         <td>
