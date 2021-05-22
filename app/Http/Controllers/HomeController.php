@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Libraries\RankingsAggregator;
+use App\Models\RankingInstance;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +25,40 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        /**
+         * determine our current season
+         */
+        $currentSeason = env('currentSeason', date("Y"));
+
+        /**
+         * get a list of seasons
+         */
+        $availableSeasons = RankingInstance::select('season')
+                                            ->distinct()
+                                            ->orderBy('season', 'desc')
+                                            ->pluck('season')
+                                            ->toArray();
+
+        /**
+         * make sure the currentSeason value
+         * is in our list of available Seasons
+         */
+        if( !in_array( $currentSeason, $availableSeasons) ):
+            if( count( $availableSeasons ) > 0 ):
+                $currentSeason = array_shift( array_values( $availableSeasons ) );
+            else:
+                $currentSeason = null;
+            endif;
+        endif;
+
+        /**
+         * get ouur current season data
+         */
+        $data = RankingsAggregator::getPlayers( $currentSeason );
+        return view('home', [
+            'data'          => $data,
+            'seasons'       => collect( $availableSeasons ),
+            'currentSeason' => $currentSeason
+        ] );
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Brackets\Media\HasMedia\ProcessMediaTrait;
 use Brackets\Media\HasMedia\AutoProcessMediaTrait;
 use Brackets\Media\HasMedia\HasMediaCollectionsTrait;
+use Illuminate\Support\Facades\DB;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 
 class RankingInstance extends Model implements HasMedia
@@ -40,6 +41,11 @@ class RankingInstance extends Model implements HasMedia
              ->maxNumberOfFiles(1)
              ->private()
              ->accepts( 'text/plain', 'text/csv' );
+    }
+
+    public static function getTableName()
+    {
+        return with(new static)->getTable();
     }
     
     /* ************************ ACCESSOR ************************* */

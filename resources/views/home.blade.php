@@ -5,13 +5,11 @@
     <div class="row justify-content-center">
         <div class="col-10">
 
-            <div class="title m-b-md">
-                Laravel
-            </div>
-
-            <example-component></example-component>
-
-
+            <seasonal-player-listing
+                :current-season="{{ $currentSeason }}"
+                :seasons="{{ $seasons->toJson() }}"
+                :initial-items="{{ $data->toJson() }}"
+            ></seasonal-player-listing>
 
         </div>
         <div class="col-2">
