@@ -26,9 +26,9 @@ class UpdateRankingInstance extends FormRequest
     public function rules(): array
     {
         return [
-            'source' => ['sometimes'],
-            'season' => ['sometimes', 'date'],
-            'date' => ['sometimes', 'date'],
+            'source' => ['required'],
+            'season' => ['required'],
+            'date' => ['required', 'date'],
             
         ];
     }

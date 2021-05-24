@@ -10,6 +10,7 @@ use App\Http\Requests\Admin\RankingInstance\StoreRankingInstance;
 use App\Http\Requests\Admin\RankingInstance\UpdateRankingInstance;
 use App\Models\RankingInstance;
 use App\Models\Source;
+use App\Http\Resources\RankingInstance as RankingInstanceResource;
 use Brackets\AdminListing\Facades\AdminListing;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -149,7 +150,8 @@ class RankingInstancesController extends Controller
 
 
         return view('admin.ranking-instance.edit', [
-            'rankingInstance' => $rankingInstance,
+            'rankingInstance' => new RankingInstanceResource( $rankingInstance ),
+            'selectedSource' => $rankingInstance->source,
             'sources' => Source::all()
         ]);
     }

@@ -1,5 +1,13 @@
 import { BaseForm } from 'craftable';
 
 export default {
-	mixins: [BaseForm]
+	mixins: [BaseForm],
+	data: function(){
+		return {
+			datePickerConfig: {
+				altInput: false,
+				dateFormat: "Y-m-d"
+			}
+		}
+	}
 };
