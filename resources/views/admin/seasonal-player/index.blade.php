@@ -49,7 +49,6 @@
                                             </label>
                                         </th>
 
-                                        <th is='sortable' :column="'id'">{{ trans('admin.seasonal-player.columns.id') }}</th>
                                         <th is='sortable' :column="'player_id'">{{ trans('admin.seasonal-player.columns.player_id') }}</th>
                                         <th is='sortable' :column="'season'">{{ trans('admin.seasonal-player.columns.season') }}</th>
                                         <th is='sortable' :column="'school'">{{ trans('admin.seasonal-player.columns.school') }}</th>
@@ -80,7 +79,6 @@
                                             </label>
                                         </td>
 
-                                    <td>@{{ item.id }}</td>
                                         <td>@{{ item.player_id }}</td>
                                         <td>@{{ item.season }}</td>
                                         <td>@{{ item.school }}</td>

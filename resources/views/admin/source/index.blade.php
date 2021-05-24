@@ -49,7 +49,6 @@
                                             </label>
                                         </th>
 
-                                        <th is='sortable' :column="'id'">{{ trans('admin.source.columns.id') }}</th>
                                         <th is='sortable' :column="'name'">{{ trans('admin.source.columns.name') }}</th>
                                         <th is='sortable' :column="'description'">{{ trans('admin.source.columns.description') }}</th>
 
@@ -75,7 +74,6 @@
                                             </label>
                                         </td>
 
-                                    <td>@{{ item.id }}</td>
                                         <td>@{{ item.name }}</td>
                                         <td>@{{ item.description }}</td>
                                         

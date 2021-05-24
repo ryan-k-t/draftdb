@@ -49,9 +49,8 @@
                                             </label>
                                         </th>
 
-                                        <th is='sortable' :column="'id'">{{ trans('admin.classification.columns.id') }}</th>
                                         <th is='sortable' :column="'name'">{{ trans('admin.classification.columns.name') }}</th>
-                                        <th is='sortable' :column="'name'">{{ trans('admin.classification.columns.description') }}</th>
+                                        <th is='sortable' :column="'description'">{{ trans('admin.classification.columns.description') }}</th>
 
                                         <th></th>
                                     </tr>
@@ -75,7 +74,6 @@
                                             </label>
                                         </td>
 
-                                    <td>@{{ item.id }}</td>
                                         <td>@{{ item.name }}</td>
                                         <td>@{{ item.description }}</td>
                                         

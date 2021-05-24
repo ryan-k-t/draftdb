@@ -49,7 +49,6 @@
                                             </label>
                                         </th>
 
-                                        <th is='sortable' :column="'id'">{{ trans('admin.player.columns.id') }}</th>
                                         <th is='sortable' :column="'first_name'">{{ trans('admin.player.columns.first_name') }}</th>
                                         <th is='sortable' :column="'middle_name'">{{ trans('admin.player.columns.middle_name') }}</th>
                                         <th is='sortable' :column="'last_name'">{{ trans('admin.player.columns.last_name') }}</th>
@@ -78,7 +77,6 @@
                                             </label>
                                         </td>
 
-                                    <td>@{{ item.id }}</td>
                                         <td>@{{ item.first_name }}</td>
                                         <td>@{{ item.middle_name }}</td>
                                         <td>@{{ item.last_name }}</td>

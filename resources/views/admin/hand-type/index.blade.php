@@ -49,7 +49,6 @@
                                             </label>
                                         </th>
 
-                                        <th is='sortable' :column="'id'">{{ trans('admin.hand-type.columns.id') }}</th>
                                         <th is='sortable' :column="'name'">{{ trans('admin.hand-type.columns.name') }}</th>
 
                                         <th></th>
@@ -74,7 +73,6 @@
                                             </label>
                                         </td>
 
-                                    <td>@{{ item.id }}</td>
                                         <td>@{{ item.name }}</td>
                                         
                                         <td>
