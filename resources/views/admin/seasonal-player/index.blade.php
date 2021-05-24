@@ -82,7 +82,7 @@
 
                                     <td>@{{ item.id }}</td>
                                         <td>@{{ item.player_id }}</td>
-                                        <td>@{{ item.season | date }}</td>
+                                        <td>@{{ item.season }}</td>
                                         <td>@{{ item.school }}</td>
                                         <td>@{{ item.city }}</td>
                                         <td>@{{ item.state }}</td>

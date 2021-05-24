@@ -11,7 +11,7 @@
     <div :class="isFormLocalized ? 'col-md-4' : 'col-sm-8'">
         <div class="input-group input-group--custom">
             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-            <datetime v-model="form.season" :config="datePickerConfig" v-validate="'required|date_format:yyyy-MM-dd HH:mm:ss'" class="flatpickr" :class="{'form-control-danger': errors.has('season'), 'form-control-success': fields.season && fields.season.valid}" id="season" name="season" placeholder="{{ trans('brackets/admin-ui::admin.forms.select_a_date') }}"></datetime>
+            <input type="text" v-model="form.season" v-validate="'required'" class="form-control" :class="{'form-control-danger': errors.has('season'), 'form-control-success': fields.season && fields.season.valid}" id="season" name="season" placeholder="{{ trans('admin.seasonal-player.columns.season') }}"></input>
         </div>
         <div v-if="errors.has('season')" class="form-control-feedback form-text" v-cloak>@{{ errors.first('season') }}</div>
     </div>
