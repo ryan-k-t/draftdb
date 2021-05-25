@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\SeasonalPlayerDeleted;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
@@ -34,7 +35,7 @@ class SeasonalPlayer extends Model
     protected $with = ['player'];
 
     protected $dispatchesEvents = [
-        'deleted' => App\Events\SeasonalPlayerDeleted::class
+        'deleted' => SeasonalPlayerDeleted::class
     ];
 
 
