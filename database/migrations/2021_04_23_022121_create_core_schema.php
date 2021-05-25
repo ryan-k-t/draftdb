@@ -22,6 +22,7 @@ class CreateCoreSchema extends Migration
         Schema::create('ranking_instances', function (Blueprint $table) {
             $table->id();
             $table->foreignId('source_id')->references('id')->on('sources');
+            $table->string('description');
             $table->year('season')->index();
             $table->date('date')->index();
             $table->timestamps();

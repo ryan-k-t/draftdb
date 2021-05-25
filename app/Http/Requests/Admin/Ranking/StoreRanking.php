@@ -33,6 +33,17 @@ class StoreRanking extends FormRequest
         ];
     }
 
+    public function getSeasonalPlayerId(){
+        if( $this->has('seasonal_player')){
+            return $this->get('seasonal_player')['id'];
+        }
+    }
+    public function getRankingInstanceId(){
+        if( $this->has('ranking_instance')){
+            return $this->get('ranking_instance')['id'];
+        }
+    }
+
     /**
     * Modify input data
     *

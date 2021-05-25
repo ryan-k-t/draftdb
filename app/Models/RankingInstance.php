@@ -19,15 +19,17 @@ class RankingInstance extends Model implements HasMedia
     protected $fillable = [
         'source_id',
         'season',
+        'description',
         'date',
     ];
-    
     
     protected $dates = [
         'date',
         'created_at',
         'updated_at',
     ];
+
+    protected $with = ['source'];
     
     protected $appends = ['resource_url'];
 

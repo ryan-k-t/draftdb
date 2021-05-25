@@ -10,6 +10,8 @@
             <ranking-form
                 :action="'{{ $ranking->resource_url }}'"
                 :data="{{ $ranking->toJson() }}"
+                :seasonal-players="{{ $seasonalPlayers->toJson() }}"
+                :ranking-instances="{{ $rankingInstances->toJson() }}"
                 v-cloak
                 inline-template>
             

@@ -9,6 +9,8 @@ use App\Http\Requests\Admin\Ranking\IndexRanking;
 use App\Http\Requests\Admin\Ranking\StoreRanking;
 use App\Http\Requests\Admin\Ranking\UpdateRanking;
 use App\Models\Ranking;
+use App\Models\RankingInstance;
+use App\Models\SeasonalPlayer;
 use Brackets\AdminListing\Facades\AdminListing;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -18,6 +20,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class RankingsController extends Controller
@@ -40,7 +43,11 @@ class RankingsController extends Controller
             ['id', 'seasonal_player_id', 'ranking_instance_id', 'rank'],
 
             // set columns to searchIn
-            ['id']
+            ['id'],
+
+            function ($query) use ($request){
+                $query->with(['seasonal_player', 'seasonal_player.player', 'ranking_instance', 'ranking_instance.source']);
+            }
         );
 
         if ($request->ajax()) {
@@ -52,7 +59,9 @@ class RankingsController extends Controller
             return ['data' => $data];
         }
 
-        return view('admin.ranking.index', ['data' => $data]);
+        return view('admin.ranking.index', [
+            'data' => $data,
+        ]);
     }
 
     /**
@@ -65,7 +74,10 @@ class RankingsController extends Controller
     {
         $this->authorize('admin.ranking.create');
 
-        return view('admin.ranking.create');
+        return view('admin.ranking.create', [
+            'rankingInstances' => RankingInstance::with('source')->get(),
+            'seasonalPlayers'  => SeasonalPlayer::with('player')->get()
+        ]);
     }
 
     /**
@@ -78,6 +90,8 @@ class RankingsController extends Controller
     {
         // Sanitize input
         $sanitized = $request->getSanitized();
+        $sanitized['seasonal_player_id'] = $request->getSeasonalPlayerId();
+        $sanitized['ranking_jnstance_id'] = $request->getRankingInstanceId();
 
         // Store the Ranking
         $ranking = Ranking::create($sanitized);
@@ -114,9 +128,10 @@ class RankingsController extends Controller
     {
         $this->authorize('admin.ranking.edit', $ranking);
 
-
         return view('admin.ranking.edit', [
-            'ranking' => $ranking,
+            'ranking'          => $ranking,
+            'rankingInstances' => RankingInstance::all(),
+            'seasonalPlayers'  => SeasonalPlayer::all()
         ]);
     }
 
@@ -131,6 +146,10 @@ class RankingsController extends Controller
     {
         // Sanitize input
         $sanitized = $request->getSanitized();
+        Log::debug(__FUNCTION__);
+        Log::debug("at least we got here");
+        $sanitized['seasonal_player_id'] = $request->getSeasonalPlayerId();
+        $sanitized['ranking_jnstance_id'] = $request->getRankingInstanceId();
 
         // Update changed values Ranking
         $ranking->update($sanitized);
@@ -138,7 +157,7 @@ class RankingsController extends Controller
         if ($request->ajax()) {
             return [
                 'redirect' => url('admin/rankings'),
-                'message' => trans('brackets/admin-ui::admin.operation.succeeded'),
+                'message'  => trans('brackets/admin-ui::admin.operation.succeeded'),
             ];
         }
 

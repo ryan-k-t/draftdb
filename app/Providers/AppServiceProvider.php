@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Ranking;
+use App\Models\SeasonalPlayer;
+use App\Observers\RankingObserver;
+use App\Observers\SeasonalPlayerObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        SeasonalPlayer::observe( SeasonalPlayerObserver::class );
+        Ranking::observe( RankingObserver::class );
     }
 }

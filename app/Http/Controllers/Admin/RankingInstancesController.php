@@ -42,10 +42,10 @@ class RankingInstancesController extends Controller
             $request,
 
             // set columns to query
-            ['id', 'source_id', 'season', 'date'],
+            ['id', 'source_id', 'season', 'date', 'description'],
 
             // set columns to searchIn
-            ['id'],
+            ['id', 'description'],
 
             function ($query) use ($request) {
                 $query->with(['source']);
@@ -103,7 +103,6 @@ class RankingInstancesController extends Controller
         // now process the import data
         $importer = new RankingsImporter( $rankingInstance, $sanitized['import_file'][0]['path']);
         $import_errors = $importer->process();
-        Log::debug( print_r( $import_errors, true));
 
         // if errors, delete the rankingInstance
         if( is_array($import_errors) && count( $import_errors ) > 0):

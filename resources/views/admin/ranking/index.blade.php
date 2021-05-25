@@ -75,8 +75,8 @@
                                             </label>
                                         </td>
 
-                                        <td>@{{ item.seasonal_player_id }}</td>
-                                        <td>@{{ item.ranking_instance_id }}</td>
+                                        <td>@{{ item.seasonal_player.player.last_name }}, @{{ item.seasonal_player.player.first_name }}</td>
+                                        <td>@{{ item.ranking_instance.source.name }} : @{{ item.ranking_instance.description }}</td>
                                         <td>@{{ item.rank }}</td>
                                         
                                         <td>

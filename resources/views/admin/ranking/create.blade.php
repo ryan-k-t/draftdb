@@ -10,6 +10,8 @@
         
         <ranking-form
             :action="'{{ url('admin/rankings') }}'"
+            :seasonal-players="{{ $seasonalPlayers->toJson() }}"
+            :ranking-instances="{{ $rankingInstances->toJson() }}"
             v-cloak
             inline-template>
 

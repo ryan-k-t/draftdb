@@ -68,6 +68,7 @@
                                         </th>
 
                                         <th is='sortable' :column="'source_id'">{{ trans('admin.ranking-instance.columns.source_id') }}</th>
+                                        <th is='sortable' :column="'description'">{{ trans('admin.ranking-instance.columns.description') }}</th>
                                         <th is='sortable' :column="'season'">{{ trans('admin.ranking-instance.columns.season') }}</th>
                                         <th is='sortable' :column="'date'">{{ trans('admin.ranking-instance.columns.date') }}</th>
 
@@ -94,6 +95,7 @@
                                         </td>
 
                                         <td>@{{ item.source.name }}</td>
+                                        <td>@{{ item.description }}</td>
                                         <td>@{{ item.season }}</td>
                                         <td>@{{ item.date | date }}</td>
                                         

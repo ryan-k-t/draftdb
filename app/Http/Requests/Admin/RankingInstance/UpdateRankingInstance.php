@@ -29,6 +29,7 @@ class UpdateRankingInstance extends FormRequest
             'source' => ['required'],
             'season' => ['required'],
             'date' => ['required', 'date'],
+            'description' => ['string']
             
         ];
     }

@@ -23,6 +23,7 @@ class RankingInstance extends JsonResource
             'season'       => $this->season,
             'source_id'    => $this->source_id,
             'source'       => $this->source,
+            'description'  => $this->description
         ];
     }
 }

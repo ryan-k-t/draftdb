@@ -26,8 +26,8 @@ class StoreSeasonalPlayer extends FormRequest
     public function rules(): array
     {
         return [
-            'player_id' => ['required', Rule::unique('seasonal_player', 'player_id'), 'string'],
-            'season' => ['required', Rule::unique('seasonal_player', 'season'), 'date'],
+            'player_id' => ['required', Rule::unique('seasonal_player', 'player_id'), 'integer'],
+            'season' => ['required', Rule::unique('seasonal_player', 'season'), 'integer'],
             'school' => ['nullable', 'string'],
             'city' => ['required', 'string'],
             'state' => ['required', 'string'],

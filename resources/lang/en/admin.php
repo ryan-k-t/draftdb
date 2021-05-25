@@ -113,6 +113,7 @@ return [
 
         'columns' => [
             'id' => 'ID',
+            'description' => 'Description',
             'source_id' => 'Source',
             'season' => 'Season',
             'date' => 'Date',

@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class SeasonalPlayer extends Model
 {
+    use Notifiable;
+
     protected $table = 'seasonal_player';
 
     protected $fillable = [
@@ -23,11 +26,15 @@ class SeasonalPlayer extends Model
         'age',
     ];
     
-    
     protected $dates = [
         'created_at',
         'updated_at',
-    
+    ];
+
+    protected $with = ['player'];
+
+    protected $dispatchesEvents = [
+        'deleted' => App\Events\SeasonalPlayerDeleted::class
     ];
 
 
@@ -46,7 +53,7 @@ class SeasonalPlayer extends Model
     public function player(){
         return $this->belongsTo(Player::class);
     }
-    
+
     protected $appends = ['resource_url'];
 
     /* ************************ ACCESSOR ************************* */

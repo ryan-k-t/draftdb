@@ -1,6 +1,7 @@
 <?php
 namespace App\Libraries;
 
+use App\Models\SeasonalPlayerRankingsAggregate;
 use Illuminate\Support\Facades\DB;
 
 class RankingsAggregator {
@@ -89,5 +90,66 @@ class RankingsAggregator {
             ORDER BY players.last_name, players.first_name, source_id ASC, ranking_instances.date DESC;        
         */
 
+    }
+
+    /**
+     * update a seasonal player's aggreate ranking
+     *
+     * @param int $seasonal_player_id
+     * @param year $season
+     * @return void
+     */
+    static public function aggregateForSeasonalPlayer( $seasonal_player_id , $season){
+        /**
+         * build a sub-query to find our most recent instances per source for this season
+         */
+        $subquery = DB::table('ranking_instances')
+            ->select( "ranking_instances.source_id", DB::raw("MAX(ranking_instances.date) AS date"))
+            ->where( 'ranking_instances.season', $season )
+            ->groupBy('source_id');
+
+        /**
+         * run our main query to get our count and sum of rankings
+         */
+        $query = DB::table("rankings")
+                   ->join('ranking_instances', 'ranking_instances.id', '=', 'rankings.ranking_instance_id')
+                   ->join('seasonal_player', 'seasonal_player.id', '=', 'rankings.seasonal_player_id')
+                   ->select(
+                       'rankings.seasonal_player_id',
+                       DB::raw('COUNT(rankings.seasonal_player_id) as ranking_count'),
+                       DB::raw('SUM(rankings.rank) AS ranking_sum')
+                   )
+                   ->joinSub( $subquery, 'self', function( $join ){
+                       $join->on('ranking_instances.source_id', '=', 'self.source_id');
+                       $join->on('ranking_instances.date', '=', 'self.date');
+                   })
+                   ->where('rankings.seasonal_player_id', $seasonal_player_id)
+                   ->groupBy('rankings.seasonal_player_id');
+        $data = $query->first();
+        // if nothing, bail
+        $count = $data ? $data->ranking_count : 0;
+        switch ($count) :
+            case 0:
+                SeasonalPlayerRankingsAggregate::where('seasonal_player_id', $seasonal_player_id )->delete();
+                return;
+                break;
+
+            case 1:
+                $average = $data->ranking_sum;
+                break;
+
+            default:
+                $average = round( $data->ranking_sum / $data->ranking_count, 2);
+                break;
+        endswitch;
+
+        SeasonalPlayerRankingsAggregate::updateOrCreate(
+            ['seasonal_player_id' => $seasonal_player_id],
+            [
+                'rankings_count'   => $data->ranking_count,
+                'rankings_sum'     => $data->ranking_sum,
+                'rankings_average' => $average
+            ]
+        );
     }
 }
