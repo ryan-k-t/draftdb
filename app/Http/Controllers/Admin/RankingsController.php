@@ -34,6 +34,7 @@ class RankingsController extends Controller
      */
     public function index(IndexRanking $request)
     {
+        Log::debug( print_r( $request->sortBy, TRUe));
         // create and AdminListing instance for a specific model and
         $data = AdminListing::create(Ranking::class)->processRequestAndGet(
             // pass the request with params
@@ -43,9 +44,11 @@ class RankingsController extends Controller
             ['id', 'seasonal_player_id', 'ranking_instance_id', 'rank'],
 
             // set columns to searchIn
-            ['id'],
+            ['id', 'players.last_name', 'players.first_name'],
 
             function ($query) use ($request){
+                $query->join('seasonal_player', 'seasonal_player.id', '=', 'rankings.seasonal_player_id');
+                $query->join('players', 'players.id', '=', 'seasonal_player.player_id');
                 $query->with(['seasonal_player', 'seasonal_player.player', 'ranking_instance', 'ranking_instance.source']);
             }
         );
@@ -146,8 +149,6 @@ class RankingsController extends Controller
     {
         // Sanitize input
         $sanitized = $request->getSanitized();
-        Log::debug(__FUNCTION__);
-        Log::debug("at least we got here");
         $sanitized['seasonal_player_id'] = $request->getSeasonalPlayerId();
         $sanitized['ranking_jnstance_id'] = $request->getRankingInstanceId();
 

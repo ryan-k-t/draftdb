@@ -40,7 +40,12 @@ class SeasonalPlayerController extends Controller
             ['id', 'player_id', 'season', 'school', 'city', 'state', 'classification_id', 'commitment', 'height', 'weight', 'bats', 'throws'],
 
             // set columns to searchIn
-            ['id', 'school', 'city', 'state', 'commitment']
+            ['id', 'school', 'city', 'state', 'commitment', 'players.first_name', 'players.last_name'],
+
+            function ($query) use ($request){
+                $query->join('players', 'players.id', '=', 'seasonal_player.player_id');
+                $query->with(['player','classification']);
+            }
         );
 
         if ($request->ajax()) {

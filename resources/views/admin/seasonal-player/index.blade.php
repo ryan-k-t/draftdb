@@ -79,12 +79,12 @@
                                             </label>
                                         </td>
 
-                                        <td>@{{ item.player_id }}</td>
+                                        <td>@{{ item.player.last_name }}, @{{ item.player.first_name }}</td>
                                         <td>@{{ item.season }}</td>
                                         <td>@{{ item.school }}</td>
                                         <td>@{{ item.city }}</td>
                                         <td>@{{ item.state }}</td>
-                                        <td>@{{ item.classification_id }}</td>
+                                        <td>@{{ item.classification.name }}</td>
                                         <td>@{{ item.commitment }}</td>
                                         
                                         <td>
