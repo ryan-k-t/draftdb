@@ -182,7 +182,7 @@ class RankingsImporter {
                 'weight'            => (integer) $weight,
                 'bats'              => Arr::get( $this->_handTypes, $bats, 0),
                 'throws'            => Arr::get( $this->_handTypes, $throws, 0),
-                'age'               => $age
+                'age'               => $age ? $age : null
             ]
         );
 

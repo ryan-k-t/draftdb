@@ -7,6 +7,8 @@ class ConversionHelper
     {
         if(in_array($height, [NULL, "\N", ""]) || empty($height)) return NULL;
 
+        $height = trim($height);
+
         if(strpos($height, "-") === NULL) return NULL;
 
         list($feet, $inches) = explode("-", $height);
