@@ -3,12 +3,10 @@
         <div class="row no-gutters">
             <div class="col-12">
                 <h1>Seasonal Draft Player Listing</h1>
-                <code>{{ currentSeason }}</code>
-
 
                 <div class="row justify-content-between mb-3">
                     <div class="col">
-                        Filter by Years
+                        Filter by Years <code>{{ currentSeason }}</code>
                     </div>
                     <div class="col">
                         <b-form-group
@@ -139,7 +137,26 @@
                         label: 'Wt'
                     },
                     {
-                        key: 'age'
+                        key: 'age',
+                        formatter: value => {
+                            if( isNaN(value) ) return value;
+                            return value.toFixed(1);
+                        }
+                    },
+                    {
+                        key: 'rankings_count',
+                        label: "Rankings",
+                        class: 'text-right'
+                    },
+                    {
+                        key: 'rankings_average',
+                        label: 'Average',
+                        class: 'text-right',
+                        sortable: true,
+                        formatter: value => {
+                            if( isNaN(value) ) return value;
+                            return value.toFixed(2);
+                        }
                     }
                 ],
                 items: [],

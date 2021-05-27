@@ -6,6 +6,13 @@ use Illuminate\Support\Facades\DB;
 
 class RankingsAggregator {
 
+    /**
+     * get all the rankings 
+     * for a given season
+     *
+     * @param year $season
+     * @return array
+     */
     static public function getPlayers( $season ){
 
         $query = DB::table('seasonal_player')
@@ -13,6 +20,7 @@ class RankingsAggregator {
           ->leftJoin('classifications', 'classifications.id', '=', 'seasonal_player.classification_id')
           ->leftJoin('hand_types AS bats', 'bats.id', '=', 'seasonal_player.bats')
           ->leftJoin('hand_types AS throws', 'throws.id', '=', 'seasonal_player.throws')
+          ->join('seasonal_player_rankings_aggregate', 'seasonal_player_rankings_aggregate.seasonal_player_id', '=', 'seasonal_player.id')
           ->whereIn('seasonal_player.id',function($query) use($season) {
             $query->select('seasonal_player.id')
                   ->from('rankings')
@@ -33,6 +41,8 @@ class RankingsAggregator {
             'seasonal_player.age',
             'bats.name AS bats',
             'throws.name AS throws',
+            'seasonal_player_rankings_aggregate.rankings_count',
+            'seasonal_player_rankings_aggregate.rankings_average'
         ]);
         $results = $query->get();
 
