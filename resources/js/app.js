@@ -27,6 +27,10 @@ Vue.use(IconsPlugin);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('seasonal-player-listing', require('./components/SeasonalPlayerListing.vue').default);
+Vue.component('seasonal-player-profile', require('./components/SeasonalPlayerProfile.vue').default);
+Vue.component('ranking-history-detail', require('./components/RankingHistoryDetail.vue').default);
+Vue.component('ranking-progression-indicator', require('./components/RankingProgressionIndicator.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

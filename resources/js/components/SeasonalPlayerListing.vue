@@ -47,7 +47,7 @@
                     @filtered="onFiltered"
                 >
                     <template #cell(name)="data">
-                        {{ data.item.last_name }}, {{ data.item.first_name }}
+                        <a href="#" @click.prevent="displayRecord(data.item)">{{ data.item.last_name }}, {{ data.item.first_name }}</a>
                     </template>
                 </b-table>
 
@@ -82,7 +82,22 @@
                 </div>
 
 
-
+                <b-sidebar
+                  id="sidebar-1"
+                  :title="selectedRecord.first_name + ' ' + selectedRecord.last_name"
+                  shadow
+                  right
+                  v-model="sidebarShown"
+                  :aria-expanded="sidebarShown ? 'true' : 'false'"
+                  class="player-sidebar"
+                >
+                    <div class="container py-4">
+                        <seasonal-player-profile
+                            v-if="selectedRecord"
+                            :player="selectedRecord"
+                        />
+                    </div>
+                </b-sidebar>
             </div>
         </div>
     </div>
@@ -103,6 +118,8 @@
         },
         data() {
             return {
+                sidebarShown: false,
+                selectedRecord: {},
                 fields: [
                     {
                         key: 'name',
@@ -111,6 +128,10 @@
                     {
                         key: 'school',
                         sortable: true
+                    },
+                    {
+                        key: 'positions',
+                        label: 'Pos'
                     },
                     {
                         key: 'bats',
@@ -124,13 +145,7 @@
                         key: 'height',
                         label: 'Ht',
                         class: 'text-right',
-                        formatter: value => {
-                            if( isNaN(value) ) return value;
-
-                            const inches = 12;
-                            let feet = Math.floor( value / inches );
-                            return feet + "-" + (value - (feet * inches));
-                        }
+                        formatter: 'impericalHeight'
                     },
                     {
                         key: 'weight',
@@ -139,7 +154,7 @@
                     {
                         key: 'age',
                         formatter: value => {
-                            if( isNaN(value) ) return value;
+                            if( isNaN(value) || value === null ) return value;
                             return value.toFixed(1);
                         }
                     },
@@ -165,7 +180,7 @@
                 perPage: 25,
                 pageOptions: [10, 25, 50, 100, 250],
                 filter: null,
-                filterOn: [], // only needed when we limit fields
+                filterOn: ['last_name','first_name','school'], // only needed when we limit fields
             }
         },
         mounted() {
@@ -177,6 +192,17 @@
             onFiltered(filteredItems){
                 this.totalRows = filteredItems.length;
                 this.currentPage = 1;
+            },
+            displayRecord(record){
+                this.selectedRecord = record;
+                if( !this.sidebarShown ) this.sidebarShown = true;
+            },
+            impericalHeight(value){
+                if( isNaN(value) ) return value;
+
+                const inches = 12;
+                let feet = Math.floor( value / inches );
+                return feet + "-" + (value - (feet * inches));
             }
         }
     }

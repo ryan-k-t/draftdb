@@ -1,8 +1,133 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&family=Roboto:ital,wght@0,100;0,400;0,700;0,900;1,100;1,400&display=swap');
 
 // Variables
 @import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+h1, .h1,
+.table thead th {
+    font-family: 'Roboto Slab', serif;
+}
+
+
+.player-sidebar {
+    .b-sidebar-header {
+        background-color: $primary;
+        color: $white;
+    }
+    .meta-listing {
+        h3 {
+            border-bottom: 1px solid $gray-200;
+            padding-bottom: .25rem;
+            font-family: 'Roboto Slab', serif;
+        }
+        + .meta-listing {
+            margin-top: 3rem;
+        }
+    }
+    .meta-listing-items {
+        @include make-row();
+
+        .meta-info {
+            padding: $grid-gutter-width / 4 $grid-gutter-width / 2;
+            display: flex;
+            flex-direction: column-reverse;
+            position: relative;
+
+            .value {
+                font-weight: $font-weight-bold;
+                font-size: 1.2em;
+            }
+            .label {
+                color: $gray-600;
+                font-family: 'Roboto Slab', serif;
+            }
+        }
+
+    }
+
+    .seasonal-player-ranking-history {
+
+        .progression-warning {
+            box-shadow: inset 8px 0 1px $warning;
+        }
+
+        .ranking-label {
+            font-weight: $font-weight-normal;
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+        .ranking-date {
+            font-weight: $font-weight-light;
+            font-size: .8rem;
+            font-style: italic;
+        }
+        .ranking-score {
+            font-weight: $font-weight-bold;
+            font-family: "Roboto Slab", serif;
+            font-size: 1.75rem;
+            line-height: 1.25;
+        }
+        .ranking-notes-indicator {
+            font-size: 1.25rem;
+            margin-left: .75rem;
+            cursor: pointer;
+            color: $primary;
+            transition: color .2s ease-in-out;
+
+            &:hover {
+                color: darken( $primary, 10% )
+            }
+        }
+
+        .card + .card {
+            margin-top: $grid-gutter-width / 2;
+        }
+
+        .card-body {
+            padding: $grid-gutter-width / 2;
+        }
+
+        + .seasonal-player-ranking-history {
+            margin-top: $grid-gutter-width;
+        }
+    }
+
+    .rankings-summary {
+        .meta-listing-items {
+            justify-content: center;
+            text-align: center;
+
+            .value {
+                font-size: 2.4em;
+            }
+        }
+    }
+}
+
+.ranking-notes-modal-header {
+    margin-bottom: 1rem;
+    h4 {
+        margin-bottom: 0;
+    }
+
+    time {
+        font-weight: $font-weight-light;
+        font-style: italic;
+    }
+}
+
+.progression-indicators {
+    font-size: 1.2rem;
+    line-height: 1;
+    display: flex;
+    flex-direction: column;
+
+}
+.progression-indicator + .progression-indicator {
+    margin-top: .5rem;
+}
+

@@ -3,6 +3,7 @@ namespace App\Libraries;
 
 use App\Models\SeasonalPlayerRankingsAggregate;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class RankingsAggregator {
 
@@ -31,6 +32,7 @@ class RankingsAggregator {
           ->orderBy('players.last_name', 'asc')
           ->orderBy('players.first_name', 'asc')
           ->select([
+            'seasonal_player.id',
             'players.first_name',
             'players.last_name',
             'seasonal_player.school',
@@ -42,36 +44,70 @@ class RankingsAggregator {
             'bats.name AS bats',
             'throws.name AS throws',
             'seasonal_player_rankings_aggregate.rankings_count',
-            'seasonal_player_rankings_aggregate.rankings_average'
-        ]);
+            'seasonal_player_rankings_aggregate.rankings_average',
+            DB::raw('( SELECT GROUP_CONCAT(`positions`.`name` SEPARATOR "/") 
+                FROM `seasonal_player_positions` 
+                JOIN `positions` ON `positions`.`id` = `seasonal_player_positions`.`position_id`
+                WHERE `seasonal_player_positions`.`seasonal_player_id` = `seasonal_player`.`id` ) AS `positions`'
+            )
+          ]);
         $results = $query->get();
 
-        return $results;
-          /*
-        SELECT 
-        players.first_name,
-        players.last_name,
-        seasonal_player.school,
-        classifications.name,
-        seasonal_player.commitment,
-        seasonal_player.height,
-        seasonal_player.weight,
-        seasonal_player.age,
-        bats.name AS bats,
-        throws.name AS throws
-        FROM seasonal_player
-        JOIN players ON players.id = seasonal_player.player_id
-        LEFT JOIN classifications ON classifications.id = seasonal_player.classification_id
-        LEFT JOIN hand_types AS bats ON bats.id = seasonal_player.bats
-        LEFT JOIN hand_types AS throws ON throws.id = seasonal_player.throws
-        WHERE seasonal_player.id IN (
-            SELECT DISTINCT(`seasonal_player_id`) 
-            FROM rankings
-            JOIN ranking_instances on ranking_instances.id = rankings.ranking_instance_id
-            JOIN seasonal_player on seasonal_player.id = rankings.seasonal_player_id
-            WHERE ranking_instances.season = 2021
-        )
-        */
+        return $results->map( function($item){
+            $item->rankings = self::getSeasonalPlayerRankings( $item->id );
+            return $item;
+        });
+
+    }
+
+    /**
+     * get all the rankings for a seasonal player
+     * 
+     * rankings are sorted by source name and date
+     *
+     * @param int $seasonal_player_id
+     * @return array
+     */
+    static function getSeasonalPlayerRankings( $seasonal_player_id ){
+        $query = DB::table('rankings')
+          ->join('ranking_instances', 'ranking_instances.id', '=', 'rankings.ranking_instance_id')
+          ->join('sources', 'sources.id', '=', 'ranking_instances.source_id')
+          ->join('seasonal_player', 'seasonal_player.id', '=', 'rankings.seasonal_player_id')
+          ->where('seasonal_player.id',$seasonal_player_id)
+          ->orderBy('sources.name', 'asc')
+          ->orderBy('ranking_instances.date', 'desc')
+          ->select([
+            'sources.id AS source_id',
+            'sources.name AS source', 
+            'ranking_instances.date',
+            'ranking_instances.description',
+            'rankings.rank',
+            'rankings.notes'
+          ]);
+        $results = $query->get();
+
+        $return = [];
+        $results->each( function( $item ) use(&$return) {
+            if( count( $return ) == 0):
+                array_push( $return, [
+                    'source_id'   => $item->source_id,
+                    'source_name' => $item->source,
+                    'history'     => [ $item ]
+                ]);
+            else:
+                $key = array_search( $item->source_id, array_column($return, 'source_id'));
+                if( $key === false ):
+                    array_push( $return, [
+                        'source_id'   => $item->source_id,
+                        'source_name' => $item->source,
+                        'history'     => [ $item ]
+                    ]);
+                else:
+                    $return[ $key ]['history'][] = $item;
+                endif;
+            endif;
+        });
+        return $return;
     }
 
     function getInstances(){
