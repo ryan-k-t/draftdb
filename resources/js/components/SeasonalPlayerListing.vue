@@ -149,7 +149,10 @@
                     },
                     {
                         key: 'weight',
-                        label: 'Wt'
+                        label: 'Wt',
+                        formatter: value => {
+                            return value == 0 ? "" : value;
+                        }
                     },
                     {
                         key: 'age',
@@ -198,7 +201,7 @@
                 if( !this.sidebarShown ) this.sidebarShown = true;
             },
             impericalHeight(value){
-                if( isNaN(value) ) return value;
+                if( isNaN(value) || !value ) return "";
 
                 const inches = 12;
                 let feet = Math.floor( value / inches );

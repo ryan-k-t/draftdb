@@ -7,11 +7,11 @@
                     <div class="label">Pos.</div>
                     <div class="value">{{ player.positions }}</div>
                 </div>
-                <div class="meta-info">
+                <div class="meta-info" v-if="player.classification">
                     <div class="label">Class.</div>
                     <div class="value">{{ player.classification }}</div>
                 </div>
-                <div class="meta-info" v-if="player.classification != '4yr'">
+                <div class="meta-info" v-if="player.commitment && player.classification != '4yr'">
                     <div class="label">Commitment.</div>
                     <div class="value">{{ player.commitment }}</div>
                 </div>
@@ -19,19 +19,19 @@
                     <div class="label">School</div>
                     <div class="value">{{ player.school }}</div>
                 </div>
-                <div class="meta-info">
+                <div class="meta-info" v-if="player.age">
                     <div class="label">Age</div>
                     <div class="value">{{ player.age }}</div>
                 </div>
-                <div class="meta-info">
+                <div class="meta-info" v-if="player.height">
                     <div class="label">Height</div>
                     <div class="value">{{ impericalHeight( player.height ) }}</div>
                 </div>
-                <div class="meta-info">
+                <div class="meta-info" v-if="player.weight">
                     <div class="label">Weight</div>
                     <div class="value">{{ player.weight }}</div>
                 </div>
-                <div class="meta-info">
+                <div class="meta-info" v-if="player.bats || player.throws">
                     <div class="label">B/T</div>
                     <div class="value">{{ player.bats }}/{{ player.throws}}</div>
                 </div>
