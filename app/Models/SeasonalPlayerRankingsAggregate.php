@@ -16,4 +16,39 @@ class SeasonalPlayerRankingsAggregate extends Model
     public function seasonalPlayer(){
         return $this->belongsTo(SeasonalPlayer::class);
     }
+
+    /**
+     * purge all records for a given season
+     *
+     * @param int $season
+     * @return void
+     */
+    public static function purgeBySeason( $season ){
+        $myTable = self::getTableName();
+        self::join('seasonal_player','seasonal_player.id', '=', $myTable.'.seasonal_player_id')
+            ->where('seasonal_player.season', $season)
+            ->delete();
+    }
+
+    /**
+     * retrieve a count of records for the given season
+     *
+     * @param int $season
+     * @return int
+     */
+    public static function countForSeason( $season ){
+        $myTable = self::getTableName();
+        return self::join('seasonal_player','seasonal_player.id', '=', $myTable.'.seasonal_player_id')
+                   ->where('seasonal_player.season', $season)
+                   ->count();
+    }
+
+    /**
+     * helper to get table name statically
+     *
+     * @return string
+     */
+    public static function getTableName(){
+        return (new self())->getTable();
+    }
 }
