@@ -7,6 +7,20 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+@include media-breakpoint-up(sm) {
+    .container-sm,
+    .container {
+        max-width: 100%;
+    }
+}
+@include media-breakpoint-up(md) {
+    .container-md,
+    .container-sm,
+    .container {
+        max-width: 100%;
+    }
+}
+
 h1, .h1,
 .table thead th {
     font-family: 'Roboto Slab', serif;
@@ -131,3 +145,21 @@ h1, .h1,
     margin-top: .5rem;
 }
 
+.sidebar {
+    border-left: 1px solid rgba($primary, .5);
+    div.actions {
+        margin-top: 4rem;
+        padding-top: 2rem;
+        border-top: 1px solid $gray-200;
+    }
+}
+.sidebar-title {
+    font-family: 'Roboto Slab', serif;
+}
+.other-items {
+    li {
+        &:not(:last-of-type) {
+            margin-bottom: .5rem;
+        }
+    }
+}

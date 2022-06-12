@@ -10002,6 +10002,19 @@ h3 {
     border-color: #dee2e6;
   }
 }
+@media (min-width: 576px) {
+  .container-sm,
+.container {
+    max-width: 100%;
+  }
+}
+@media (min-width: 768px) {
+  .container-md,
+.container-sm,
+.container {
+    max-width: 100%;
+  }
+}
 h1, .h1,
 .table thead th {
   font-family: "Roboto Slab", serif;
@@ -10105,4 +10118,21 @@ h1, .h1,
 
 .progression-indicator + .progression-indicator {
   margin-top: 0.5rem;
+}
+
+.sidebar {
+  border-left: 1px solid rgba(52, 144, 220, 0.5);
+}
+.sidebar div.actions {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.sidebar-title {
+  font-family: "Roboto Slab", serif;
+}
+
+.other-items li:not(:last-of-type) {
+  margin-bottom: 0.5rem;
 }
