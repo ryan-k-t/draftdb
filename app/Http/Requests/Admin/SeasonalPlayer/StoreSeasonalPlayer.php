@@ -29,14 +29,14 @@ class StoreSeasonalPlayer extends FormRequest
             'player_id' => ['required', Rule::unique('seasonal_player', 'player_id'), 'integer'],
             'season' => ['required', Rule::unique('seasonal_player', 'season'), 'integer'],
             'school' => ['nullable', 'string'],
-            'city' => ['required', 'string'],
-            'state' => ['required', 'string'],
-            'classification_id' => ['required', 'string'],
+            'city' => ['nullable', 'string'],
+            'state' => ['nullable', 'string'],
+            'classification_id' => ['required', 'integer'],
             'commitment' => ['nullable', 'string'],
             'height' => ['nullable', 'integer'],
             'weight' => ['nullable', 'integer'],
-            'bats' => ['required', 'string'],
-            'throws' => ['required', 'string'],
+            'bats' => ['required', 'integer'],
+            'throws' => ['required', 'integer'],
             
         ];
     }

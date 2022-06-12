@@ -163,7 +163,7 @@ class RankingsImporter {
             [
                 'first_name' => $firstName,
                 'last_name'  => $lastName
-            ],
+            ]
         );
 
         // find/create SeasonalPlayer

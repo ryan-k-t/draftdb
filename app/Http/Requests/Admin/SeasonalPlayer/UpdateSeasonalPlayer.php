@@ -26,17 +26,17 @@ class UpdateSeasonalPlayer extends FormRequest
     public function rules(): array
     {
         return [
-            'player_id' => ['sometimes', Rule::unique('seasonal_player', 'player_id')->ignore($this->seasonalPlayer->getKey(), $this->seasonalPlayer->getKeyName()), 'string'],
-            'season' => ['sometimes', Rule::unique('seasonal_player', 'season')->ignore($this->seasonalPlayer->getKey(), $this->seasonalPlayer->getKeyName()), 'date'],
+            'player_id' => ['required', Rule::unique('seasonal_player', 'player_id')->ignore($this->seasonalPlayer->getKey(), $this->seasonalPlayer->getKeyName()), 'integer'],
+            'season' => ['required', Rule::unique('seasonal_player', 'season')->ignore($this->seasonalPlayer->getKey(), $this->seasonalPlayer->getKeyName()), 'integer'],
             'school' => ['nullable', 'string'],
-            'city' => ['sometimes', 'string'],
-            'state' => ['sometimes', 'string'],
-            'classification_id' => ['sometimes', 'string'],
+            'city' => ['nullable', 'string'],
+            'state' => ['nullable', 'string'],
+            'classification_id' => ['required', 'integer'],
             'commitment' => ['nullable', 'string'],
             'height' => ['nullable', 'integer'],
             'weight' => ['nullable', 'integer'],
-            'bats' => ['sometimes', 'string'],
-            'throws' => ['sometimes', 'string'],
+            'bats' => ['required', 'integer'],
+            'throws' => ['required', 'integer'],
             
         ];
     }
