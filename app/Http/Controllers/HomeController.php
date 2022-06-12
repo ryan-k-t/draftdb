@@ -45,7 +45,8 @@ class HomeController extends Controller
          */
         if( !in_array( $currentSeason, $availableSeasons) ):
             if( count( $availableSeasons ) > 0 ):
-                $currentSeason = array_shift( array_values( $availableSeasons ) );
+                $vals = array_values( $availableSeasons );
+                $currentSeason = array_shift($vals);
             else:
                 $currentSeason = null;
             endif;
