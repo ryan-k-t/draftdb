@@ -6,7 +6,14 @@
 
                 <div class="row justify-content-between mb-3">
                     <div class="col">
-                        Filter by Years <code>{{ currentSeason }}</code>
+                        <b-form-group
+                            label="Filter by Years"
+                            label-for="season-filter"
+                            label-size="sm"
+                            class="mb-0"
+                        >
+                            <b-form-select name="season-filter" v-model="currentSeason" :options="seasonOptions" size="sm" />
+                        </b-form-group>
                     </div>
                     <div class="col">
                         <b-form-group
@@ -190,6 +197,16 @@
             this.items = this.initialItems;
             // Set the initial number of items
             this.totalRows = this.items.length;
+        },
+        computed: {
+            seasonOptions() {
+                return this.seasons.map(function(i) {
+                    return {
+                        value: i,
+                        text: i
+                    };
+                }, []);
+            },
         },
         methods: {
             onFiltered(filteredItems){
