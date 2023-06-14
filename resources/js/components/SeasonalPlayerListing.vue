@@ -2,17 +2,17 @@
     <div class="container px-0">
         <div class="row no-gutters">
             <div class="col-12">
-                <h1>Seasonal Draft Player Listing</h1>
+                <h1>{{ season }} Draft Player Analysis</h1>
 
                 <div class="row justify-content-between mb-3">
                     <div class="col">
                         <b-form-group
-                            label="Filter by Years"
+                            label="Filter by Year"
                             label-for="season-filter"
                             label-size="sm"
                             class="mb-0"
                         >
-                            <b-form-select name="season-filter" v-model="currentSeason" :options="seasonOptions" size="sm" />
+                            <b-form-select name="season-filter" v-model="season" :options="seasonOptions" size="sm" />
                         </b-form-group>
                     </div>
                     <div class="col">
@@ -45,6 +45,7 @@
                     striped
                     hover
                     small
+                    :busy="isBusy"
                     :items="items"
                     :fields="fields"
                     :current-page="currentPage"
@@ -185,6 +186,8 @@
                     }
                 ],
                 items: [],
+                season: null,
+                isBusy: false,
                 totalRows: 1,
                 currentPage: 1,
                 perPage: 25,
@@ -195,8 +198,15 @@
         },
         mounted() {
             this.items = this.initialItems;
+            this.season = this.currentSeason;
             // Set the initial number of items
             this.totalRows = this.items.length;
+        },
+        watch: {
+            season: function(newVal, oldVal){
+                if (!oldVal) return;
+                this.fetchData();
+            },
         },
         computed: {
             seasonOptions() {
@@ -223,7 +233,42 @@
                 const inches = 12;
                 let feet = Math.floor( value / inches );
                 return feet + "-" + (value - (feet * inches));
-            }
+            },
+            fetchData(){
+                this.isBusy = true;
+                if (this.season === this.currentSeason){
+                    this.items = this.initialItems;
+                    this.isBusy = false;
+                    return;
+                }
+
+                axios.post('/api/rankings', {
+                    season: this.season
+                })
+                .then((response) => {
+                    if(response.status == 200){
+                        if(!response.data)
+                        {
+                            return;
+                        }
+
+                        console.log(response.data);
+                        this.items = response.data.records;
+
+                        //self.populateData(data);
+                    } else {
+                        console.log(response.status+" : "+response.statusText);
+                        return;
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    this.isBusy = false;
+                });
+            },
+
         }
     }
 </script>
