@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Log;
 
 class RankingsAggregator {
 
+    const RANKING_SEPARATOR = '|';
+
     /**
      * get all the rankings 
      * for a given season
@@ -45,6 +47,7 @@ class RankingsAggregator {
             'throws.name AS throws',
             'seasonal_player_rankings_aggregate.rankings_count',
             'seasonal_player_rankings_aggregate.rankings_average',
+            'seasonal_player_rankings_aggregate.rankings_mean',
             DB::raw('( SELECT GROUP_CONCAT(`positions`.`name` SEPARATOR "/") 
                 FROM `seasonal_player_positions` 
                 JOIN `positions` ON `positions`.`id` = `seasonal_player_positions`.`position_id`
@@ -163,7 +166,8 @@ class RankingsAggregator {
                    ->select(
                        'rankings.seasonal_player_id',
                        DB::raw('COUNT(rankings.seasonal_player_id) as ranking_count'),
-                       DB::raw('SUM(rankings.rank) AS ranking_sum')
+                       DB::raw('SUM(rankings.rank) AS ranking_sum'),
+                       DB::raw('GROUP_CONCAT(rankings.rank SEPARATOR \'' . self::RANKING_SEPARATOR . '\') AS rankings')
                    )
                    ->joinSub( $subquery, 'self', function( $join ){
                        $join->on('ranking_instances.source_id', '=', 'self.source_id');
@@ -174,28 +178,96 @@ class RankingsAggregator {
         $data = $query->first();
         // if nothing, bail
         $count = $data ? $data->ranking_count : 0;
-        switch ($count) :
-            case 0:
-                SeasonalPlayerRankingsAggregate::where('seasonal_player_id', $seasonal_player_id )->delete();
-                return;
-                break;
+        if ($count === 0) {
+            SeasonalPlayerRankingsAggregate::where('seasonal_player_id', $seasonal_player_id )->delete();
+            return false;
+        }
 
-            case 1:
-                $average = $data->ranking_sum;
-                break;
-
-            default:
-                $average = round( $data->ranking_sum / $data->ranking_count, 2);
-                break;
-        endswitch;
+        $average = $count === 1 ? $data->ranking_sum : round( $data->ranking_sum / $data->ranking_count, 2);
+        $rankings = self::parse_rankings($data->rankings);
+        if ($rankings) {
+            $mean = self::generate_mean($rankings);
+        } else {
+            $mean = null;
+        }
 
         SeasonalPlayerRankingsAggregate::updateOrCreate(
             ['seasonal_player_id' => $seasonal_player_id],
             [
                 'rankings_count'   => $data->ranking_count,
                 'rankings_sum'     => $data->ranking_sum,
-                'rankings_average' => $average
+                'rankings_average' => $average,
+                'rankings_mean'    => $mean,
             ]
         );
+
+        return true;
+    }
+
+    /**
+     * parses the returned DB value into an array of integers
+     *
+     * @param string $values_string
+     * @return []int|null
+     */
+    private static function parse_rankings($values_string) {
+        $values = explode(self::RANKING_SEPARATOR, $values_string);
+        if  (!$values || !is_array($values)) {
+            return null;
+        }
+
+        // make sure they're all ints
+        $ints = array_map(function($item) {
+            return intval($item);
+        }, $values);
+
+        // remove the empties
+        $int_values = array_filter($ints);
+
+        return $int_values;
+    }
+
+    /**
+     * generates the mean from a list of numbers
+     *
+     * @param [type] $values_string
+     * @return void
+     */
+    private static function generate_mean($values) {
+        $value_count = count($values);
+        if ($value_count === 0) {
+            return;
+        }
+        if ($value_count === 1) {
+            return array_shift($values);
+        }
+
+        // sort
+        asort($values);
+
+        switch (true) {
+            case $value_count === 1:
+                $response = array_pop($values);
+                break;
+            case $value_count === 2:
+            case $value_count === 3:
+                // get average of high and low values
+                $high_value = array_pop($values);
+                $low_value = array_shift($values);
+                $response = round(($high_value + $low_value) / 2, 2);
+                break;
+            case $value_count > 3;
+                // remove the high value
+                $high_value = array_pop($values);
+                // remove the low value
+                $low_value = array_shift($values);
+                $response = round(array_sum($values) / count($values), 2);
+                break;
+            default:
+                $response = null;
+                break;
+        }
+        
+        return $response;
     }
 }

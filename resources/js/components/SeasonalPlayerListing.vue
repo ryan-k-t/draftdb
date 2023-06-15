@@ -183,6 +183,16 @@
                             if( isNaN(value) ) return value;
                             return value.toFixed(2);
                         }
+                    },
+                    {
+                        key: 'rankings_mean',
+                        label: 'Mean',
+                        class: 'text-right',
+                        sortable: true,
+                        formatter: value => {
+                            if( isNaN(value) ) return value;
+                            return value.toFixed(2);
+                        }
                     }
                 ],
                 items: [],

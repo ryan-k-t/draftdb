@@ -11,7 +11,8 @@ class SeasonalPlayerRankingsAggregate extends Model
         'seasonal_player_id',
         'rankings_sum',
         'rankings_count',
-        'rankings_average'
+        'rankings_average',
+        'rankings_mean'
     ];
     public function seasonalPlayer(){
         return $this->belongsTo(SeasonalPlayer::class);

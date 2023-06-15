@@ -60,11 +60,14 @@ class AggregateRankings extends Command
         $this->info( "Found ".$id_count." record".($id_count == 1 ? "" : "s")." to aggregate");
         foreach ($player_ids as $i => $player_id) :
             $this->info( "Processing record ". ($i + 1)." of ".$id_count);
-            RankingsAggregator::aggregateForSeasonalPlayer( $player_id, $this->_season );
+            $success = RankingsAggregator::aggregateForSeasonalPlayer( $player_id, $this->_season );
+            if (!$success) {
+                $this->error("Could not aggregate for player id {$player_id}");
+            }
         endforeach;
 
         $newCount = SeasonalPlayerRankingsAggregate::countForSeason( $this->_season );
-        $this->info("Now have ".$newCount." record".($newCount == 1 ? "" : "s"));
+        $this->info("There now " . ($newCount === 1 ? "is" : "are") . " " . $newCount." record" . ($newCount == 1 ? "" : "s"));
     }
 
     /**

@@ -48,6 +48,10 @@
                     <div class="label">Average</div>
                     <div class="value">{{ player.rankings_average }}</div>
                 </div>
+                <div class="meta-info">
+                    <div class="label">Mean</div>
+                    <div class="value">{{ player.rankings_mean }}</div>
+                </div>
             </div>
 
             <section class="seasonal-player-ranking-histories pt-4">
