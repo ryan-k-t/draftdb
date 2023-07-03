@@ -180,7 +180,7 @@
                         class: 'text-right',
                         sortable: true,
                         formatter: value => {
-                            if( isNaN(value) ) return value;
+                            if( isNaN(value) || value === null ) return value;
                             return value.toFixed(2);
                         }
                     },
@@ -190,7 +190,7 @@
                         class: 'text-right',
                         sortable: true,
                         formatter: value => {
-                            if( isNaN(value) ) return value;
+                            if( isNaN(value) || value === null ) return value;
                             return value.toFixed(2);
                         }
                     }
