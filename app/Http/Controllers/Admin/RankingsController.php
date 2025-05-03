@@ -34,7 +34,6 @@ class RankingsController extends Controller
      */
     public function index(IndexRanking $request)
     {
-        Log::debug( print_r( $request->sortBy, TRUe));
         // create and AdminListing instance for a specific model and
         $data = AdminListing::create(Ranking::class)->processRequestAndGet(
             // pass the request with params

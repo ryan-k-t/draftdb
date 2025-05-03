@@ -2,43 +2,66 @@
     <div class="container px-0">
         <div class="row no-gutters">
             <div class="col-12">
-                <h1>{{ season }} Draft Player Analysis</h1>
+                <div class="row justify-content-between align-items-center">
+                    <div class="col"><h1>{{ season }} Draft Player Analysis</h1></div>
 
-                <div class="row justify-content-between mb-3">
+                    <b-form-group
+                        label="Year"
+                        label-for="season-filter"
+                        label-size="sm"
+                        label-cols="4"
+                        label-align="right"
+                        class="mb-0 col-3"
+                    >
+                        <b-form-select name="season-filter" v-model="season" :options="seasonOptions" size="sm" />
+                    </b-form-group>
+                </div>
+
+                <div class="font-weight-bold text-uppercase">Filters:</div>
+                <div class="row mb-3 justify-content-between">
                     <div class="col">
                         <b-form-group
-                            label="Filter by Year"
-                            label-for="season-filter"
+                            label="Position"
+                            label-for="position-filter"
                             label-size="sm"
                             class="mb-0"
                         >
-                            <b-form-select name="season-filter" v-model="season" :options="seasonOptions" size="sm" />
+                            <b-form-select name="position-filter" v-model="position" :options="positionOptions" size="sm" />
                         </b-form-group>
                     </div>
                     <div class="col">
                         <b-form-group
-                            label="Filter"
+                            label="Class"
+                            label-for="class-filter"
+                            label-size="sm"
+                            class="mb-0"
+                        >
+                            <b-form-select name="class-filter" v-model="classification" :options="classificationOptions" size="sm" />
+                        </b-form-group>
+                    </div>
+                    <div class="col">
+                        <b-form-group
+                            label="Search Name or School"
                             label-for="filter-input"
-                            label-cols-sm="3"
-                            label-align-sm="right"
                             label-size="sm"
                             class="mb-0"
                         >
                             <b-input-group size="sm">
                                 <b-form-input
                                     id="filter-input"
-                                    v-model="filter"
+                                    v-model="searchText"
                                     type="search"
                                     placeholder="Type to Search"
                                 ></b-form-input>
 
                                 <b-input-group-append>
-                                    <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+                                    <b-button :disabled="!searchText" @click="searchText = ''">Clear</b-button>
                                 </b-input-group-append>
                             </b-input-group>
                         </b-form-group>
                     </div>
                 </div>
+
 
 
                 <b-table
@@ -51,7 +74,7 @@
                     :current-page="currentPage"
                     :per-page="perPage"
                     :filter="filter"
-                    :filter-included-fields="filterOn"
+                    :filter-function="filterTable"
                     @filtered="onFiltered"
                 >
                     <template #cell(name)="data">
@@ -197,13 +220,15 @@
                 ],
                 items: [],
                 season: null,
+                classification: '',
+                position: '',
                 isBusy: false,
                 totalRows: 1,
                 currentPage: 1,
                 perPage: 25,
                 pageOptions: [10, 25, 50, 100, 250],
                 filter: null,
-                filterOn: ['last_name','first_name','school'], // only needed when we limit fields
+                searchText: ''
             }
         },
         mounted() {
@@ -216,9 +241,138 @@
             season: function(newVal, oldVal){
                 if (!oldVal) return;
                 this.fetchData();
+                this.filter = null;
+                this.searchText = '';
+                this.position = '';
+                this.classification = '';
             },
+            searchText: function(newVal) {
+                if (newVal) {
+                    if (!this.filter) {
+                        this.filter = {
+                            searchText: newVal,
+                            position: '',
+                            classification: ''
+                        }
+                    } else {
+                        this.filter.searchText = newVal;
+                    }
+
+                    return;
+                }
+
+                if (this.filter) {
+                    this.filter.searchText = '';
+                }
+            },
+            position: function(newVal) {
+                if (newVal) {
+                    if (!this.filter) {
+                        this.filter = {
+                            searchText: '',
+                            position: newVal,
+                            classification: ''
+                        }
+                    } else {
+                        this.filter.position = newVal;
+                    }
+
+                    return;
+                }
+
+                if (this.filter) {
+                    this.filter.position = '';
+                }
+            },
+            classification: function(newVal) {
+                if (newVal) {
+                    if (!this.filter) {
+                        this.filter = {
+                            searchText: '',
+                            position: '',
+                            classification: newVal
+                        }
+                    } else {
+                        this.filter.classification = newVal;
+                    }
+
+                    return;
+                }
+
+                if (this.filter) {
+                    this.filter.classification = '';
+                }
+            }
+
         },
         computed: {
+            classifications() {
+                return this.initialItems.reduce((current, listItem) => {
+                    if (!current.hasOwnProperty(listItem.classification)){
+                        current[listItem.classification] = 0;
+                    }
+
+                    current[listItem.classification] += 1;
+
+                    return current;
+                }, {});
+            },
+            classificationOptions() {
+                const options = [
+                    {
+                        value: '',
+                        text: 'All'
+                    }
+                ];
+                for(const key in this.classifications) {
+                    options.push({
+                        value: key,
+                        text: key
+                    });
+                }
+                return options;
+            },
+            positions() {
+                return this.initialItems.reduce((current, listItem) => {
+                    const posList = listItem.positions.split('/');
+                    posList.forEach((pos) => {
+                        pos = pos.trim();
+                        if (!current.hasOwnProperty(pos)){
+                            current[pos] = 0;
+                        }
+
+                        current[pos] += 1;
+                    });
+
+                    return current;
+                }, {});
+            },
+            positionOptions() {
+                const options = [
+                    {
+                        value: '',
+                        text: 'All'
+                    }
+                ];
+                for(const key in this.positions) {
+                    options.push({
+                        value: key,
+                        text: key
+                    });
+                }
+
+                options.sort((a, b) => {
+                    if (a.value < b.value) {
+                        return -1;
+                    }
+                    if (a.value > b.value) {
+                        return 1;
+                    }
+                    return 0;
+                });
+
+                return options;
+            },
             seasonOptions() {
                 return this.seasons.map(function(i) {
                     return {
@@ -229,6 +383,35 @@
             },
         },
         methods: {
+            filterTable(row, filters) {
+                if (filters.searchText) {
+                    const fields = ['last_name', 'first_name', 'school'];
+                    const regx = new RegExp(filters.searchText, 'i');
+                    const passes = fields.some(field => {
+                        return regx.test(row[field]);
+                    });
+
+                    if (!passes) {
+                        return false;
+                    }
+                }
+
+                if (filters.position) {
+                    const rawPlayerPositions = row.positions.split('/');
+                    const playerPositions = rawPlayerPositions.map(item => item.trim());
+                    if (playerPositions.indexOf(filters.position) === -1){
+                        return false;
+                    }
+                }
+                
+                if (filters.classification) {
+                    if (row.classification !== filters.classification) {
+                        return false;
+                    }
+                }
+
+                return true;
+            },
             onFiltered(filteredItems){
                 this.totalRows = filteredItems.length;
                 this.currentPage = 1;
