@@ -20,6 +20,7 @@ Route::get('/', function () {
 });
 */
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/draft', 'DraftController@index')->name('draft');
 Route::redirect('/home', '/', 301);
 
 Auth::routes();
