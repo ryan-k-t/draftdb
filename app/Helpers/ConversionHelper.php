@@ -9,6 +9,8 @@ class ConversionHelper
 
         $height = trim($height);
 
+        if(is_numeric($height)) return $height;
+
         if(strpos($height, "-") === NULL) return NULL;
 
         list($feet, $inches) = explode("-", $height);
