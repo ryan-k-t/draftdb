@@ -23,7 +23,7 @@ Vue.component('ranking-form', {
     },
     methods: {
         playerName: function(object){
-            return object.player.last_name + ", " + object.player.first_name;
+            return `${object.player.last_name}, ${object.player.first_name} [${object.season}]`;
         }
     }
 
