@@ -245,6 +245,7 @@
                 this.searchText = '';
                 this.position = '';
                 this.classification = '';
+                this.currentPage = 1;
             },
             searchText: function(newVal) {
                 if (newVal) {
@@ -431,6 +432,7 @@
                 this.isBusy = true;
                 if (this.season === this.currentSeason){
                     this.items = this.initialItems;
+                    this.totalRows = this.items.length;
                     this.isBusy = false;
                     return;
                 }
@@ -447,6 +449,7 @@
 
                         console.log(response.data);
                         this.items = response.data.records;
+                        this.totalRows = this.items.length;
 
                         //self.populateData(data);
                     } else {
