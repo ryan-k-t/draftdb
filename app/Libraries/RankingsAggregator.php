@@ -23,6 +23,7 @@ class RankingsAggregator {
           ->leftJoin('classifications', 'classifications.id', '=', 'seasonal_player.classification_id')
           ->leftJoin('hand_types AS bats', 'bats.id', '=', 'seasonal_player.bats')
           ->leftJoin('hand_types AS throws', 'throws.id', '=', 'seasonal_player.throws')
+          ->leftJoin('seasonal_player_draft_entries', 'seasonal_player_draft_entries.seasonal_player_id', '=', 'seasonal_player.id')
           ->join('seasonal_player_rankings_aggregate', 'seasonal_player_rankings_aggregate.seasonal_player_id', '=', 'seasonal_player.id')
           ->whereIn('seasonal_player.id',function($query) use($season) {
             $query->select('seasonal_player.id')
@@ -48,6 +49,10 @@ class RankingsAggregator {
             'seasonal_player_rankings_aggregate.rankings_count',
             'seasonal_player_rankings_aggregate.rankings_average',
             'seasonal_player_rankings_aggregate.rankings_mean',
+            'seasonal_player_draft_entries.signed',
+            'seasonal_player_draft_entries.round',
+            'seasonal_player_draft_entries.selection',
+            'seasonal_player_draft_entries.team',
             DB::raw('( SELECT GROUP_CONCAT(`positions`.`name` SEPARATOR "/") 
                 FROM `seasonal_player_positions` 
                 JOIN `positions` ON `positions`.`id` = `seasonal_player_positions`.`position_id`

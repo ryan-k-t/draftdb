@@ -53,7 +53,7 @@ class HomeController extends Controller
         endif;
 
         /**
-         * get ouur current season data
+         * get our current season data
          */
         $data = RankingsAggregator::getPlayers( $currentSeason );
         return view('home', [

@@ -37,6 +37,29 @@
                 </div>
             </div>
         </section>
+
+        <section class="meta-listing draft-summary" v-if="player.selection">
+            <h3>Draft Information</h3>
+            <div class="meta-listing-items">
+                <div class="meta-info">
+                    <div class="label">Rnd.</div>
+                    <div class="value">{{ player.round }}</div>
+                </div>
+                <div class="meta-info">
+                    <div class="label">Sel.</div>
+                    <div class="value">{{ player.selection }}</div>
+                </div>
+                <div class="meta-info">
+                    <div class="label">Team</div>
+                    <div class="value">{{ player.team }}</div>
+                </div>
+                <div class="meta-info">
+                    <div class="label">Signed</div>
+                    <div class="value">{{ player.signed ? 'Y' : 'N'}}</div>
+                </div>
+            </div>
+        </section>
+
         <section class="meta-listing rankings-summary">
             <h3>Rankings</h3>
             <div class="meta-listing-items">

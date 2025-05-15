@@ -216,6 +216,12 @@
                             if( isNaN(value) || value === null ) return value;
                             return value.toFixed(2);
                         }
+                    },
+                    {
+                        key: 'selection',
+                        label: 'Drafted',
+                        class: 'text-right',
+                        sortable: true
                     }
                 ],
                 items: [],
