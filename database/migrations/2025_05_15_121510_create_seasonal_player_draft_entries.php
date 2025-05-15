@@ -18,7 +18,8 @@ class CreateSeasonalPlayerDraftEntries extends Migration
             $table->foreignId('seasonal_player_id')->references('id')->on('seasonal_player');
             $table->string('round');
             $table->unsignedSmallInteger('selection');
-            $table->string('team', 3);
+            $table->string('team');
+            $table->unsignedSmallInteger('team_id')->nullable();
             $table->boolean('signed')->default(false);
             $table->timestamps();
             $table->unique('seasonal_player_id');

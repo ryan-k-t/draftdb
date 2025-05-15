@@ -20,8 +20,8 @@ Route::get('/', function () {
 });
 */
 Route::get('/', 'HomeController@index')->name('home');
-Route::get('/draft', 'DraftController@index')->name('draft');
 Route::redirect('/home', '/', 301);
+Route::get('/draft/{season?}', 'DraftController@index')->name('draft');
 
 Auth::routes();
 
