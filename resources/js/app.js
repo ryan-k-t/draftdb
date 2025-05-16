@@ -30,7 +30,9 @@ Vue.component('seasonal-player-listing', require('./components/SeasonalPlayerLis
 Vue.component('seasonal-player-profile', require('./components/SeasonalPlayerProfile.vue').default);
 Vue.component('ranking-history-detail', require('./components/RankingHistoryDetail.vue').default);
 Vue.component('ranking-progression-indicator', require('./components/RankingProgressionIndicator.vue').default);
-
+Vue.component('ranking-summaries', require('./components/RankingSummaries.vue').default);
+Vue.component('meta-info', require('./components/MetaInfo.vue').default);
+Vue.component('ranking-summary-breakdown-tiers', require('./components/RankingSummaryBreakdownTiers.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

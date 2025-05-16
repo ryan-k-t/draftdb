@@ -9287,81 +9287,81 @@ h1, .h1,
   font-family: "Roboto Slab", serif;
 }
 
-.player-sidebar .b-sidebar-header {
+.b-sidebar .b-sidebar-header {
   background-color: #3490dc;
   color: #fff;
 }
-.player-sidebar .meta-listing h3 {
+.b-sidebar .meta-listing h3 {
   border-bottom: 1px solid #e9ecef;
   padding-bottom: 0.25rem;
   font-family: "Roboto Slab", serif;
 }
-.player-sidebar .meta-listing + .meta-listing {
+.b-sidebar .meta-listing + .meta-listing {
   margin-top: 3rem;
 }
-.player-sidebar .meta-listing-items {
+.b-sidebar .meta-listing-items {
   display: flex;
   flex-wrap: wrap;
   margin-right: -15px;
   margin-left: -15px;
 }
-.player-sidebar .meta-listing-items .meta-info {
+.b-sidebar .meta-listing-items .meta-info {
   padding: 7.5px 15px;
   display: flex;
   flex-direction: column-reverse;
   position: relative;
 }
-.player-sidebar .meta-listing-items .meta-info .value {
+.b-sidebar .meta-listing-items .meta-info .value {
   font-weight: 700;
   font-size: 1.2em;
 }
-.player-sidebar .meta-listing-items .meta-info .label {
+.b-sidebar .meta-listing-items .meta-info .label {
   color: #6c757d;
   font-family: "Roboto Slab", serif;
 }
-.player-sidebar .seasonal-player-ranking-history .progression-warning {
+.b-sidebar .seasonal-player-ranking-history .progression-warning {
   box-shadow: inset 8px 0 1px #ffed4a;
 }
-.player-sidebar .seasonal-player-ranking-history .ranking-label {
+.b-sidebar .seasonal-player-ranking-history .ranking-label {
   font-weight: 400;
   font-size: 1rem;
   margin-bottom: 0;
 }
-.player-sidebar .seasonal-player-ranking-history .ranking-date {
+.b-sidebar .seasonal-player-ranking-history .ranking-date {
   font-weight: 300;
   font-size: 0.8rem;
   font-style: italic;
 }
-.player-sidebar .seasonal-player-ranking-history .ranking-score {
+.b-sidebar .seasonal-player-ranking-history .ranking-score {
   font-weight: 700;
   font-family: "Roboto Slab", serif;
   font-size: 1.75rem;
   line-height: 1.25;
 }
-.player-sidebar .seasonal-player-ranking-history .ranking-notes-indicator {
+.b-sidebar .seasonal-player-ranking-history .ranking-notes-indicator {
   font-size: 1.25rem;
   margin-left: 0.75rem;
   cursor: pointer;
   color: #3490dc;
   transition: color 0.2s ease-in-out;
 }
-.player-sidebar .seasonal-player-ranking-history .ranking-notes-indicator:hover {
+.b-sidebar .seasonal-player-ranking-history .ranking-notes-indicator:hover {
   color: #2176bd;
 }
-.player-sidebar .seasonal-player-ranking-history .card + .card {
+.b-sidebar .seasonal-player-ranking-history .card + .card {
   margin-top: 15px;
 }
-.player-sidebar .seasonal-player-ranking-history .card-body {
+.b-sidebar .seasonal-player-ranking-history .card-body {
   padding: 15px;
 }
-.player-sidebar .seasonal-player-ranking-history + .seasonal-player-ranking-history {
+.b-sidebar .seasonal-player-ranking-history + .seasonal-player-ranking-history {
   margin-top: 30px;
 }
-.player-sidebar .rankings-summary .meta-listing-items {
+.b-sidebar .rankings-summary .meta-listing-items {
   justify-content: center;
   text-align: center;
 }
-.player-sidebar .rankings-summary .meta-listing-items .value {
+.b-sidebar .rankings-summary .meta-listing-items .value {
   font-size: 2.4em;
 }
 

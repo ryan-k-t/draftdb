@@ -3,7 +3,10 @@
         <div class="row no-gutters">
             <div class="col-12">
                 <div class="row justify-content-between align-items-center">
-                    <div class="col"><h1>{{ season }} Draft Player Analysis</h1></div>
+                    <div class="col d-flex align-items-center">
+                        <h1>{{ season }} Draft Player Analysis</h1>
+                        <b-button size="sm" v-on:click="summarySidebarShown = !summarySidebarShown" variant="outline-secondary mx-3">{{ summarySidebarShown ? 'Hide' : 'Show' }} Summary</b-button>
+                    </div>
 
                     <b-form-group
                         label="Year"
@@ -142,14 +145,25 @@
                     </div>
                 </div>
 
+                <b-sidebar
+                    id="summary-sidebar"
+                    left
+                    shadow
+                    v-model="summarySidebarShown"
+                    :aria-expanded="summarySidebarShown ? 'true' : 'false'"
+                    class="summary-sidebar"
+                    title="Summary Analysis"
+                >
+                    <ranking-summaries :records="items" />
+                </b-sidebar>
 
                 <b-sidebar
                   id="sidebar-1"
                   :title="selectedRecord.first_name + ' ' + selectedRecord.last_name"
                   shadow
                   right
-                  v-model="sidebarShown"
-                  :aria-expanded="sidebarShown ? 'true' : 'false'"
+                  v-model="playerSidebarShown"
+                  :aria-expanded="playerSidebarShown ? 'true' : 'false'"
                   class="player-sidebar"
                 >
                     <div class="container py-4">
@@ -161,6 +175,7 @@
                 </b-sidebar>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -179,7 +194,8 @@
         },
         data() {
             return {
-                sidebarShown: false,
+                playerSidebarShown: false,
+                summarySidebarShown: false,
                 selectedRecord: {},
                 fields: [
                     {
@@ -576,7 +592,7 @@
             },
             displayRecord(record){
                 this.selectedRecord = record;
-                if( !this.sidebarShown ) this.sidebarShown = true;
+                if( !this.playerSidebarShown ) this.playerSidebarShown = true;
             },
             impericalHeight(value){
                 if( isNaN(value) || !value ) return "";
