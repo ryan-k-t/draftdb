@@ -194,7 +194,7 @@ class RankingsImporter {
             $updates['weight'] = (integer) $weight;
         }
         if (!$seasonalPlayer['height'] && $height) {
-            $updates['weight'] = ConversionHelper::heightToInches( $height );
+            $updates['height'] = ConversionHelper::heightToInches( $height );
         }
         $bat_id = Arr::get( $this->_handTypes, $bats, 0);
         if (!$seasonalPlayer['bats'] && $bat_id) {
