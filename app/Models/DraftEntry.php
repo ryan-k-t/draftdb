@@ -26,7 +26,6 @@ class DraftEntry extends Model
         'signed',
         'pickValue',
         'signingBonus'
-    
     ];
 
     protected $table = 'draft_entries';

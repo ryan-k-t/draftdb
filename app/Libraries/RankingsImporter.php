@@ -167,24 +167,48 @@ class RankingsImporter {
         );
 
         // find/create SeasonalPlayer
+        // ... should see if it exists, if not, create
+        // if so, check the data to see if it exists in the incoming but not the existing
+        // and update accordingly
         $seasonalPlayer = SeasonalPlayer::firstOrCreate(
             [
                 'season'    => $this->_instance->season,
                 'player_id' => $player->id
             ],
             [
-                'school'            => $from,
-                //'city'              => '',
-                //'state'             => '',
-                'classification_id' => Arr::get( $this->_classifications, $classification, 0),
-                'commitment'        => $commitment,
-                'height'            => ConversionHelper::heightToInches( $height ),
-                'weight'            => (integer) $weight,
-                'bats'              => Arr::get( $this->_handTypes, $bats, 0),
-                'throws'            => Arr::get( $this->_handTypes, $throws, 0),
-                'age'               => $age ? $age : null
+                'classification_id' => Arr::get( $this->_classifications, $classification, 0)
             ]
         );
+
+        $updates = [];
+        if (!$seasonalPlayer->school && $from) {
+            $updates['school'] = $from;
+        }
+        if (!$seasonalPlayer->commitment && $commitment) {
+            $updates['commitment'] = $commitment;
+        }
+        if (!$seasonalPlayer->age && $age) {
+            $updates['age'] = $age;
+        }
+        if (!$seasonalPlayer['weight'] && $weight) {
+            $updates['weight'] = (integer) $weight;
+        }
+        if (!$seasonalPlayer['height'] && $height) {
+            $updates['weight'] = ConversionHelper::heightToInches( $height );
+        }
+        $bat_id = Arr::get( $this->_handTypes, $bats, 0);
+        if (!$seasonalPlayer['bats'] && $bat_id) {
+            $updates['bats'] = $bat_id;
+        }
+
+        $throw_id = Arr::get( $this->_handTypes, $throws, 0);
+        if (!$seasonalPlayer['throws'] && $throw_id) {
+            $updates['throws'] = $throw_id;
+        }
+
+        if ($updates) {
+            $seasonalPlayer->update($updates);
+        }
 
         // update SeasonalPlayer position(s)
         $position_list = explode( "/", $positions );

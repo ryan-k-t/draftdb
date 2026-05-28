@@ -106,7 +106,7 @@ export default {
             return result;
         },
         breakdowns() {
-            return this.records.reduce((accumulator, ranking) => {
+            const unordered = this.records.reduce((accumulator, ranking) => {
                 if (!accumulator.hasOwnProperty(ranking.classification)){
                     accumulator[ranking.classification] = {
                         players: [],
@@ -157,6 +157,15 @@ export default {
 
                 return accumulator;
             }, {});
+
+            const ordered = Object.keys(unordered)
+                .sort() // Sort the keys alphabetically
+                .reduce((obj, key) => {
+                    obj[key] = unordered[key]; // Rebuild the object with sorted keys
+                    return obj;
+                }, {});
+
+            return ordered;
         }
     },
     methods: {

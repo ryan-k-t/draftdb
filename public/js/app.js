@@ -2338,7 +2338,7 @@ __webpack_require__.r(__webpack_exports__);
     breakdowns: function breakdowns() {
       var _this = this;
 
-      return this.records.reduce(function (accumulator, ranking) {
+      var unordered = this.records.reduce(function (accumulator, ranking) {
         if (!accumulator.hasOwnProperty(ranking.classification)) {
           accumulator[ranking.classification] = {
             players: [],
@@ -2396,6 +2396,13 @@ __webpack_require__.r(__webpack_exports__);
 
         return accumulator;
       }, {});
+      var ordered = Object.keys(unordered).sort() // Sort the keys alphabetically
+      .reduce(function (obj, key) {
+        obj[key] = unordered[key]; // Rebuild the object with sorted keys
+
+        return obj;
+      }, {});
+      return ordered;
     }
   },
   methods: {
@@ -2507,8 +2514,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
-//
 //
 //
 //
@@ -2823,6 +2828,8 @@ __webpack_require__.r(__webpack_exports__);
       this.signingStatus = '';
       this.draftStatus = '';
       this.currentPage = 1;
+      this.playerSidebarShown = false;
+      this.summarySidebarShown = false;
     },
     searchText: function searchText(newVal) {
       if (newVal) {
@@ -2974,7 +2981,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     positions: function positions() {
       return this.initialItems.reduce(function (current, listItem) {
-        var posList = listItem.positions.split('/');
+        var posList = listItem.positions ? listItem.positions.split('/') : [];
         posList.forEach(function (pos) {
           pos = pos.trim();
 
@@ -84273,18 +84280,6 @@ var render = function () {
                 1
               ),
             ]
-          ),
-          _vm._v(" "),
-          _c(
-            "b-button",
-            {
-              on: {
-                click: function ($event) {
-                  _vm.summarySidebarShown = true
-                },
-              },
-            },
-            [_vm._v("Show Summary Analysis")]
           ),
           _vm._v(" "),
           _c(

@@ -149,20 +149,11 @@ class DraftController extends Controller
     }
 
     /* to match entries to  seasonal_players = 
-    insert ignore into seasonal_player_draft_entries (
-    seasonal_player_id,
-    round,
-    selection,
-    team,
-    team_id,
-    `signed`
-    )
-    select seasonal_player.id, draft_entries.round, draft_entries.selection, draft_entries.team, draft_entries.team_id, draft_entries.signed
-    from seasonal_player 
-    join players on players.id = seasonal_player.player_id
-    left join draft_entries on draft_entries.last_name = players.last_name and draft_entries.first_name = players.first_name and draft_entries.season = seasonal_player.season
-    left join seasonal_player_draft_entries  on seasonal_player_draft_entries.seasonal_player_id = seasonal_player.id
-    where seasonal_player.season = 2023 and seasonal_player_draft_entries.id is null and draft_entries.id is not null
-    order by players.last_name, players.first_name
+    update draft_entries
+     join players on players.last_name = draft_entries.last_name and players.first_name = draft_entries.first_name
+     join seasonal_player on seasonal_player.`player_id` = players.id and seasonal_player.season = draft_entries.season
+         set draft_entries.`seasonal_player_id` = seasonal_player.id
+    WHERE draft_entries.`season` = 2025 and draft_entries.seasonal_player_id is NULL and seasonal_player.id IS NOT NULL
+
     */
 }

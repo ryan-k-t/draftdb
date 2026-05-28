@@ -54,6 +54,9 @@ class SeasonalPlayer extends Model
     public function player(){
         return $this->belongsTo(Player::class);
     }
+    public function draftEntry(){
+        return $this->belongsTo(DraftEntry::class);
+    }
 
     protected $appends = ['resource_url'];
 

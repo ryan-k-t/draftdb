@@ -326,7 +326,9 @@
         watch: {
             season: function(newVal, oldVal){
                 if (!oldVal) return;
+
                 this.fetchData();
+                
                 this.filter = null;
                 this.searchText = '';
                 this.position = '';
@@ -334,6 +336,8 @@
                 this.signingStatus = '';
                 this.draftStatus = '';
                 this.currentPage = 1;
+                this.playerSidebarShown = false;
+                this.summarySidebarShown = false;
             },
             searchText: function(newVal) {
                 if (newVal) {
@@ -484,7 +488,7 @@
             },
             positions() {
                 return this.initialItems.reduce((current, listItem) => {
-                    const posList = listItem.positions.split('/');
+                    const posList = listItem.positions ? listItem.positions.split('/') : [];
                     posList.forEach((pos) => {
                         pos = pos.trim();
                         if (!current.hasOwnProperty(pos)){
